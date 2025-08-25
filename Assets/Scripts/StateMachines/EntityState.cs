@@ -4,33 +4,34 @@ public abstract class EntityState
 {
     protected Player player;
     protected StateMachine stateMachine;
-    protected string stateName;
+    protected string animBoolName;
+    protected Animator anim;
+    protected Rigidbody2D rb;
+    protected PlayerInputSet input;
 
-    public EntityState(Player player, StateMachine stateMachine, string stateName)
+    public EntityState(Player player, StateMachine stateMachine, string animBoolName)
     {
         this.player = player;
         this.stateMachine = stateMachine;
-        this.stateName = stateName;
-    }
+        this.animBoolName = animBoolName;
 
-    protected EntityState(StateMachine stateMachine, string stateName)
-    {
-        this.stateMachine = stateMachine;
-        this.stateName = stateName;
+        anim = player.anim;
+        rb = player.rb;
+        input = player.input;
     }
 
     public virtual void Enter()
     {
-        Debug.Log($"I Entered {stateName}");
+        anim.SetBool(animBoolName, true);
     }
 
     public virtual void Update()
     {
-        Debug.Log($"I Updated {stateName}");
+        anim.SetFloat("yVelocity", rb.linearVelocity.y);
     }
 
     public virtual void Exit()
     {
-        Debug.Log($"I Exited {stateName}");
+        anim.SetBool(animBoolName, false);
     }
 }
